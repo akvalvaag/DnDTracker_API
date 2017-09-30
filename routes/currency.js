@@ -10,6 +10,17 @@ router.get('/', function(req, res, next) {
 
 });
 
+router.put('/:name/:type/:amount', function(req, res, next) {
+  var nameValue = req.params.name
+  var typeValue = req.params.type
+  var amountValue = req.params.amount
+  updateMoney({name : nameValue}, typeValue, amountValue, db, function(result){
+  	  res.json(result);
+  })
+
+});
+
+//Functions
 var totalCurrency = function(db, callback) {
   // Get the documents collection
   var collection = db.collection('characters');
@@ -40,17 +51,32 @@ var totalCurrency = function(db, callback) {
 }
 
 
-var updateMoney = function(quesry, type, amount, db, callback) {
+var updateMoney = function(query, typeVal, amountVal, db, callback) {
   // Get the documents collection
   var collection = db.collection('characters');
 
   // Find some documents
-  collection.updateOne({query}, {$set: {type : amount}}, function(err, docs)) {
-    assert.equal(err, null);
-
-    	
-    callback(
-  });
+  if(typeVal === gold){
+  	  collection.updateOne(query, {$set: {gold : amountVal}}, function(err, docs) {
+    	assert.equal(err, null);
+    	callback(docs)
+  	});
+  } else if(typeVal === electrum){
+  	  collection.updateOne(query, {$set: {electrum : amountVal}}, function(err, docs) {
+    	assert.equal(err, null);
+    	callback(docs)
+  	});
+  } else if(typeVal === silver){
+  	  collection.updateOne(query, {$set: {silver : amountVal}}, function(err, docs) {
+    	assert.equal(err, null);
+    	callback(docs)
+  	});
+  } else if(typeVal === copper){
+  	  collection.updateOne(query, {$set: {copper : amountVal}}, function(err, docs) {
+    	assert.equal(err, null);
+    	callback(docs)
+  	});
+  }
 }
 
 module.exports = router;

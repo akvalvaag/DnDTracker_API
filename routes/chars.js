@@ -59,7 +59,7 @@ var createCharacter = function(req, db, callback) {
   var collection = db.collection('characters');
 
   	var nameVal = req.body.name
-	var lvlVal = req.body.lvl
+	var expVal = req.body.exp
 	var strVal = req.body.str
 	var dexVal = req.body.dex
 	var conVal = req.body.con
@@ -67,16 +67,26 @@ var createCharacter = function(req, db, callback) {
 	var wisVal = req.body.wis
 	var chaVal = req.body.cha
 
+	var classVal = req.body.className
+	var initiativeVal = req.body.initiative
+	var acVal = req.body.ac
+	
+
+
+
 
 	var character = {
     	name : nameVal,
-    	lvl : lvlVal,
+    	exp : expVal,
     	str : strVal,
     	dex : dexVal,
     	con : conVal,
     	int : intVal,
     	wis : wisVal,
     	cha : chaVal,
+    	class : classVal,
+    	initiative : initiativeVal,
+    	ac : acVal,
     	money : {
     		gold : 0,
     		electrum : 0,
@@ -98,13 +108,16 @@ var insertCharacters = function(db, callback) {
   collection.insertMany([
     {
     	name : "Xalph",
-    	lvl : 2,
+    	exp : 345,
     	str : 12,
     	dex : 13,
-    	con : 14,
-    	int : 15,
+    	con : 11,
+    	int : 8,
     	wis : 16,
-    	cha : 17,
+    	cha : 10,
+    	class : "Druid",
+    	initiative : 3,
+    	ac : 19,
     	money : {
     		gold : 130,
     		electrum : 34,
@@ -138,13 +151,16 @@ var insertCharacters = function(db, callback) {
 	},    
 	{
     	name : "Evon",
-    	lvl : 2,
+    	exp : 345,
     	str : 12,
     	dex : 11,
     	con : 10,
     	int : 9,
     	wis : 8,
     	cha : 7,
+    	class : "Sorcerer",
+    	initiative : 2,
+    	ac : 15,
     	money : {
     		gold : 1300,
     		electrum : 340,

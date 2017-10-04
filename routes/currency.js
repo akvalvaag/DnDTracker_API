@@ -10,31 +10,42 @@ router.get('/', function(req, res, next) {
 
 });
 
-router.put('/set/:name/:type/:amount', function(req, res, next) {
-  var nameValue = req.params.name
-  var typeValue = req.params.type
-  var amountValue = req.params.amount
-  updateMoney({name : nameValue}, typeValue, amountValue, db, function(result){
+router.put('/subtract/:name', function(req, res, next) {
+  	var nameValue = req.params.name
+  	
+  	var goldVal = req.body.gold
+	var electrumVal = req.body.electrum
+	var silverVal = req.body.silver
+	var copperVal = req.body.copper
+
+  updateMoney({name : nameValue}, +goldVal, +electrumVal, +silverVal, +copperVal, db, function(result){
   	  res.json(result);
   })
 
 });
 
-router.put('/earn/:name/:type/:amount', function(req, res, next) {
-  var nameValue = req.params.name
-  var typeValue = req.params.type
-  var amountValue = req.params.amount
-  changeMoney({name : nameValue}, typeValue, +amountValue, db, function(result){
+router.put('/add/:name', function(req, res, next) {
+  	var nameValue = req.params.name
+  	
+  	var goldVal = req.body.gold
+	var electrumVal = req.body.electrum
+	var silverVal = req.body.silver
+	var copperVal = req.body.copper
+
+  	changeMoney({name : nameValue}, +goldVal, +electrumVal, +silverVal, +copperVal, db, function(result){
   	  res.json(result);
   })
 
 });
 
-router.put('/spend/:name/:type/:amount', function(req, res, next) {
-  var nameValue = req.params.name
-  var typeValue = req.params.type
-  var amountValue = req.params.amount
-  changeMoney({name : nameValue}, typeValue, -amountValue, db, function(result){
+router.put('/subtract/:name', function(req, res, next) {
+  	var nameValue = req.params.name
+  	
+  	var goldVal = req.body.gold
+	var electrumVal = req.body.electrum
+	var silverVal = req.body.silver
+	var copperVal = req.body.copper
+  changeMoney({name : nameValue}, -goldVal, -electrumVal, -silverVal, -copperVal, db, function(result){
   	  res.json(result);
   })
 
@@ -71,60 +82,47 @@ var totalCurrency = function(db, callback) {
 }
 
 
-var updateMoney = function(query, typeVal, amountVal, db, callback) {
+var updateMoney = function(query, goldVal, electrumVal, silverVal, copperVal, db, callback) {
   // Get the documents collection
   var collection = db.collection('characters');
 
   // Find some documents
-  if(typeVal === "gold"){
-  	  collection.updateOne(query, {$set: {"money.gold" : amountVal}}, function(err, docs) {
+  
+  	collection.updateOne(query, {$set: {"money.gold" : goldVal}}, function(err, docs) {
+    	assert.equal(err, null);
+  	});
+
+  	  collection.updateOne(query, {$set: {"money.electrum" : electrumVal}}, function(err, docs) {
+    	assert.equal(err, null);
+  	});
+
+  	  collection.updateOne(query, {$set: {"money.silver" : silverVal}}, function(err, docs) {
+    	assert.equal(err, null);
+  	});
+
+  	  collection.updateOne(query, {$set: {"money.copper" : copperVal}}, function(err, docs) {
     	assert.equal(err, null);
     	callback(docs)
   	});
-  } else if(typeVal === "electrum"){
-  	  collection.updateOne(query, {$set: {"money.electrum" : amountVal}}, function(err, docs) {
-    	assert.equal(err, null);
-    	callback(docs)
-  	});
-  } else if(typeVal === "silver"){
-  	  collection.updateOne(query, {$set: {"money.silver" : amountVal}}, function(err, docs) {
-    	assert.equal(err, null);
-    	callback(docs)
-  	});
-  } else if(typeVal === "copper"){
-  	  collection.updateOne(query, {$set: {"money.copper" : amountVal}}, function(err, docs) {
-    	assert.equal(err, null);
-    	callback(docs)
-  	});
-  }
 }
 
-var changeMoney = function(query, typeVal, amountVal, db, callback) {
-  // Get the documents collection
+var changeMoney = function(query, goldVal, electrumVal, silverVal, copperVal, db, callback) {
   var collection = db.collection('characters');
 
-  // Find some documents
-  if(typeVal === "gold"){
-  	  collection.updateOne(query, {$inc: {"money.gold" : amountVal}}, function(err, docs) {
+  	  collection.updateOne(query, {$inc: {"money.gold" : goldVal}}, function(err, docs) {
+    	assert.equal(err, null);
+  	});
+  	  collection.updateOne(query, {$inc: {"money.electrum" : electrumVal}}, function(err, docs) {
+    	assert.equal(err, null);
+  	});
+  	  collection.updateOne(query, {$inc: {"money.silver" : silverVal}}, function(err, docs) {
+    	assert.equal(err, null);
+  	});
+
+  	  collection.updateOne(query, {$inc: {"money.copper" : copperVal}}, function(err, docs) {
     	assert.equal(err, null);
     	callback(docs)
   	});
-  } else if(typeVal === "electrum"){
-  	  collection.updateOne(query, {$inc: {"money.electrum" : amountVal}}, function(err, docs) {
-    	assert.equal(err, null);
-    	callback(docs)
-  	});
-  } else if(typeVal === "silver"){
-  	  collection.updateOne(query, {$inc: {"money.silver" : amountVal}}, function(err, docs) {
-    	assert.equal(err, null);
-    	callback(docs)
-  	});
-  } else if(typeVal === "copper"){
-  	  collection.updateOne(query, {$inc: {"money.copper" : amountVal}}, function(err, docs) {
-    	assert.equal(err, null);
-    	callback(docs)
-  	});
-  }
 }
 
 module.exports = router;

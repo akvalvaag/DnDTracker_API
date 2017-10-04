@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 
 });
 
-router.put('/subtract/:name', function(req, res, next) {
+router.put('/set/:name', function(req, res, next) {
   	var nameValue = req.params.name
   	
   	var goldVal = req.body.gold
@@ -18,7 +18,7 @@ router.put('/subtract/:name', function(req, res, next) {
 	var silverVal = req.body.silver
 	var copperVal = req.body.copper
 
-  updateMoney({name : nameValue}, +goldVal, +electrumVal, +silverVal, +copperVal, db, function(result){
+  setMoney({name : nameValue}, +goldVal, +electrumVal, +silverVal, +copperVal, db, function(result){
   	  res.json(result);
   })
 
@@ -82,7 +82,7 @@ var totalCurrency = function(db, callback) {
 }
 
 
-var updateMoney = function(query, goldVal, electrumVal, silverVal, copperVal, db, callback) {
+var setMoney = function(query, goldVal, electrumVal, silverVal, copperVal, db, callback) {
   // Get the documents collection
   var collection = db.collection('characters');
 

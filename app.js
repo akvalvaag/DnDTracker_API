@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var chars = require('./routes/chars');
 var currency = require('./routes/currency');
 var items = require('./routes/items');
+var exp = require('./routes/exp');
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use('/', index);
 app.use('/chars', chars);
 app.use('/currency', currency);
 app.use('/items', items);
+app.use('/exp', exp);
 
 
 // catch 404 and forward to error handler

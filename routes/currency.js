@@ -56,6 +56,7 @@ var totalCurrency = function(db, callback) {
   // Get the documents collection
   var collection = db.collection('characters');
 
+  var platinum = 0
   var goldCount = 0
   var silverCount = 0
   var electrumCount = 0
@@ -65,6 +66,7 @@ var totalCurrency = function(db, callback) {
   collection.find({}, {_id:0, money:1}).toArray(function(err, docs) {
     assert.equal(err, null);
     	for (var i = docs.length - 1; i >= 0; i--) {
+    		platinumCount += docs[i].money.platinum
     		goldCount += docs[i].money.gold
     		electrumCount += docs[i].money.electrum
     		silverCount += docs[i].money.silver
@@ -73,6 +75,7 @@ var totalCurrency = function(db, callback) {
 
     	
     callback({
+    	platinum:platinumCount,
     	gold:goldCount,
     	electrum:electrumCount,
     	silver:silverCount,
@@ -82,7 +85,7 @@ var totalCurrency = function(db, callback) {
 }
 
 
-var setMoney = function(query, goldVal, electrumVal, silverVal, copperVal, db, callback) {
+var setMoney = function(query, platinumVal, goldVal, electrumVal, silverVal, copperVal, db, callback) {
   // Get the documents collection
   var collection = db.collection('characters');
 
@@ -102,11 +105,15 @@ var setMoney = function(query, goldVal, electrumVal, silverVal, copperVal, db, c
 
   	  collection.updateOne(query, {$set: {"money.copper" : copperVal}}, function(err, docs) {
     	assert.equal(err, null);
+  	});
+
+  	  collection.updateOne(query, {$set: {"money.platinum" : platinumVal}}, function(err, docs) {
+    	assert.equal(err, null);
     	callback(docs)
   	});
 }
 
-var changeMoney = function(query, goldVal, electrumVal, silverVal, copperVal, db, callback) {
+var changeMoney = function(query, platinumVal, goldVal, electrumVal, silverVal, copperVal, db, callback) {
   var collection = db.collection('characters');
 
   	  collection.updateOne(query, {$inc: {"money.gold" : goldVal}}, function(err, docs) {
@@ -120,6 +127,10 @@ var changeMoney = function(query, goldVal, electrumVal, silverVal, copperVal, db
   	});
 
   	  collection.updateOne(query, {$inc: {"money.copper" : copperVal}}, function(err, docs) {
+    	assert.equal(err, null);
+  	});
+
+  	  collection.updateOne(query, {$set: {"money.platinum" : platinumVal}}, function(err, docs) {
     	assert.equal(err, null);
     	callback(docs)
   	});

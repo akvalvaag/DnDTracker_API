@@ -88,6 +88,7 @@ var createCharacter = function(req, db, callback) {
     	initiative : initiativeVal,
     	ac : acVal,
     	money : {
+    		platinum : 0,
     		gold : 0,
     		electrum : 0,
     		silver : 0,
@@ -119,6 +120,7 @@ var insertCharacters = function(db, callback) {
     	initiative : 3,
     	ac : 19,
     	money : {
+    		platinum, 1,
     		gold : 130,
     		electrum : 34,
     		silver : 460,
@@ -162,6 +164,7 @@ var insertCharacters = function(db, callback) {
     	initiative : 2,
     	ac : 15,
     	money : {
+    		platinum : 2,
     		gold : 1300,
     		electrum : 340,
     		silver : 46,

@@ -60,6 +60,31 @@ var getExp = function(db, callback) {
 
 }
 
+
+var divide = function(db, callback) {
+    var expCollection = db.collection('exp');
+    var charCollection = db.collection('characters');
+
+    expCollection.findOne({}, function(err, expDocs){
+      charCollection.count({}, function(err, count){
+
+        console.log(expDocs.exp)
+        console.log(count)
+
+        var expAmount = expDocs.exp
+        var charsAmount = count
+
+        var amount = Math.floor(expAmount/charsAmount);
+
+        charCollection.updateMany({}, {$inc: {exp : amount}}, function(err, docs) {
+          assert.equal(err, null);
+          updateExp(-expAmount, db, callback)
+        });
+      });
+    });
+
+}
+
 var updateExp = function(amount, db, callback) {
     var collection = db.collection('exp');
 
@@ -71,8 +96,5 @@ var updateExp = function(amount, db, callback) {
     });
 }
 
-var divide = function(db, callback) {
-    
-}
 
 module.exports = router;

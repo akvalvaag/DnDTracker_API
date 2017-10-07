@@ -120,7 +120,7 @@ var insertCharacters = function(db, callback) {
     	initiative : 3,
     	ac : 19,
     	money : {
-    		platinum, 1,
+    		platinum: 1,
     		gold : 130,
     		electrum : 34,
     		silver : 460,

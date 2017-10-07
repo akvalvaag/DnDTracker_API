@@ -3,12 +3,21 @@ var router = express.Router();
 var assert = require('assert')
 
 router.get('/', function(req, res, next) {
-  var nameValue = req.params.name
   totalCurrency(db, function(result){
   	  res.json(result);
   })
 
 });
+
+
+router.get('/:name', function(req, res, next) {
+  var nameValue = req.params.name
+  getCurrency(db, {name : nameValue},function(result){
+  	  res.json(result);
+  })
+
+});
+
 
 router.put('/set/:name', function(req, res, next) {
   	var nameValue = req.params.name
@@ -137,6 +146,17 @@ var changeMoney = function(query, platinumVal, goldVal, electrumVal, silverVal, 
     	assert.equal(err, null);
     	callback(docs)
   	});
+}
+
+var getCurrency = function(db, query, callback) {
+  // Get the documents collection
+  var collection = db.collection('characters');
+
+  collection.findOne(query, {_id:0, money:1}, function(err, docs) {
+    assert.equal(err, null);
+    
+    callback(docs)
+  });
 }
 
 module.exports = router;

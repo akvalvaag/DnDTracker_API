@@ -28,7 +28,7 @@ router.put('/set/:name', function(req, res, next) {
 	var silverVal = req.body.silver
 	var copperVal = req.body.copper
 
-  setMoney({name : nameValue}, +platinumVal +goldVal, +electrumVal, +silverVal, +copperVal, db, function(result){
+  setMoney({name : nameValue}, +platinumVal, +goldVal, +electrumVal, +silverVal, +copperVal, db, function(result){
   	  res.json(result);
   })
 
@@ -37,13 +37,13 @@ router.put('/set/:name', function(req, res, next) {
 router.put('/add/:name', function(req, res, next) {
   	var nameValue = req.params.name
   	
-        var platinumVal = req.body.platinum
+    var platinumVal = req.body.platinum
   	var goldVal = req.body.gold
 	var electrumVal = req.body.electrum
 	var silverVal = req.body.silver
 	var copperVal = req.body.copper
 
-  	changeMoney({name : nameValue}, +platinumVal +goldVal, +electrumVal, +silverVal, +copperVal, db, function(result){
+  	changeMoney({name : nameValue}, +platinumVal, +goldVal, +electrumVal, +silverVal, +copperVal, db, function(result){
   	  res.json(result);
   })
 
@@ -52,12 +52,12 @@ router.put('/add/:name', function(req, res, next) {
 router.put('/subtract/:name', function(req, res, next) {
   	var nameValue = req.params.name
   	
-        var platinumVal = req.body.platinum
+    var platinumVal = req.body.platinum
   	var goldVal = req.body.gold
 	var electrumVal = req.body.electrum
 	var silverVal = req.body.silver
 	var copperVal = req.body.copper
-  changeMoney({name : nameValue}, -platinumVal -goldVal, -electrumVal, -silverVal, -copperVal, db, function(result){
+  changeMoney({name : nameValue}, -platinumVal, -goldVal, -electrumVal, -silverVal, -copperVal, db, function(result){
   	  res.json(result);
   })
 
@@ -126,7 +126,7 @@ var setMoney = function(query, platinumVal, goldVal, electrumVal, silverVal, cop
 }
 
 var changeMoney = function(query, platinumVal, goldVal, electrumVal, silverVal, copperVal, db, callback) {
-  var collection = db.collection('characters');
+  	var collection = db.collection('characters');
 
   	  collection.updateOne(query, {$inc: {"money.gold" : goldVal}}, function(err, docs) {
     	assert.equal(err, null);
